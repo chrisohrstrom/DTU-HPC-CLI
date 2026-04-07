@@ -1,5 +1,10 @@
 # Changelogs
 
+## v1.5.0
+
+submit and resubmit:
+* Added new options to control where and when to get email notifications about jobs: `--email`, `--notify-begin`, `--notify-end`, `--notify-fail`
+
 ## v1.4.1
 
 General fixes:

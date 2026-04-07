@@ -144,7 +144,20 @@ def create_job_script(config: SubmitConfig) -> str:
     for feature in features:
         options.append(("R", f'"select[{feature}]"'))
 
+    if config.email is not None:
+        options.append(("u", config.email))
+
     options = [f"#BSUB -{flag} {value}" for flag, value in options]
+
+    if config.notify_begin or config.notify_end or config.notify_fail:
+        if config.notify_begin:
+            options.append("#BSUB -B")
+        if config.notify_end:
+            options.append("#BSUB -N")
+        if config.notify_fail:
+            options.append("#BSUB -Ne")
+    else:
+        options.append('#BSUB -env "LSB_JOB_REPORT_MAIL=N"')
 
     script = [
         "#!/bin/sh",

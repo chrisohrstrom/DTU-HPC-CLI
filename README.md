@@ -223,12 +223,16 @@ Provide your own default settings for any of the *submit* options:
         "feature": [
             "gpu32gb"
         ],
+        "email": "your@email.com",
         "error": "path/to/error_dir",
         "gpus": 1,
         "hosts": 1,
         "memory": "5GB",
         "model": "XeonGold6230",
         "name": "my_job",
+        "notify_begin": false,
+        "notify_end": false,
+        "notify_fail": true,
         "output": "path/to/output_dir",
         "preamble": [],
         "queue": "hpc",
@@ -301,12 +305,16 @@ Here is a complete example for a configuration that customizes everything:
         "feature": [
             "gpu32gb"
         ],
+        "email": "your@email.com",
         "error": "path/to/error_dir",
         "gpus": 1,
         "hosts": 1,
         "memory": "5GB",
         "model": "XeonGold6230",
         "name": "my_job",
+        "notify_begin": false,
+        "notify_end": false,
+        "notify_fail": true,
         "output": "path/to/output_dir_",
         "preamble": [],
         "queue": "hpc",

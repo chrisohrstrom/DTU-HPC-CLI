@@ -15,6 +15,7 @@ class ResubmitConfig:
     commands: list[str] | None
     confirm: bool | None
     cores: int | None
+    email: str | None
     feature: list[str] | None
     error: str | None
     gpus: int | None
@@ -22,6 +23,9 @@ class ResubmitConfig:
     memory: Memory | None
     model: str | None
     name: str | None
+    notify_begin: bool | None
+    notify_end: bool | None
+    notify_fail: bool | None
     output: str | None
     queue: str | None
     preamble: list[str]
@@ -41,12 +45,16 @@ def execute_resubmit(config: ResubmitConfig):
         "confirm": config.confirm,
         "cores": config.cores,
         "feature": config.feature,
+        "email": config.email,
         "error": config.error,
         "gpus": config.gpus,
         "hosts": config.hosts,
         "memory": config.memory,
         "model": config.model,
         "name": config.name,
+        "notify_begin": config.notify_begin,
+        "notify_end": config.notify_end,
+        "notify_fail": config.notify_fail,
         "output": config.output,
         "queue": config.queue,
         "preamble": config.preamble,
