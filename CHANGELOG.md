@@ -1,5 +1,10 @@
 # Changelogs
 
+## v1.5.1
+
+remove:
+* Added `--all` option to remove all unfinished jobs.
+
 ## v1.5.0
 
 submit and resubmit:
