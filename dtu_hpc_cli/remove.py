@@ -8,6 +8,7 @@ from dtu_hpc_cli.history import load_history
 
 @dataclasses.dataclass
 class RemoveConfig:
+    all: bool
     from_history: bool
     job_ids: list[str]
 
@@ -20,6 +21,17 @@ def execute_remove(config: RemoveConfig):
 
 
 def expand_job_ids(config: RemoveConfig) -> list[str]:
+    if config.all:
+        job_ids = get_all_job_ids()
+        if len(job_ids) == 0:
+            typer.echo("No jobs to remove.")
+            raise typer.Exit()
+        typer.echo("The following jobs will be removed (because --all flag is used):")
+        for job_id in job_ids:
+            typer.echo(f" * {job_id}")
+        typer.confirm("\nRemove all jobs (enter to remove)?", abort=True, default=True)
+        return job_ids
+
     if not config.from_history:
         return config.job_ids
 
@@ -35,9 +47,22 @@ def expand_job_ids(config: RemoveConfig) -> list[str]:
     new_job_ids = job_ids - requested_ids
     job_ids = sorted(job_ids)
     if len(new_job_ids) != 0:
-        typer.echo("The following jobs will be removed (because --from-history flag was used):")
+        typer.echo("The following jobs will be removed (because --from-history flag is used):")
         for job_id in job_ids:
             typer.echo(f" * {job_id}")
         typer.confirm("\nRemove these jobs (enter to remove)?", abort=True, default=True)
+
+    return job_ids
+
+
+def get_all_job_ids() -> list[str]:
+    with get_client() as client:
+        _, output = client.run("bstat", silent=True)
+
+    lines = output.splitlines()
+    if len(lines) <= 1:
+        return []
+
+    job_ids = [line.split()[0] for line in lines[1:] if len(line.strip()) > 0]
 
     return job_ids

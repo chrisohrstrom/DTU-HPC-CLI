@@ -10,7 +10,7 @@ class LocalClient(Client):
     def close(self):
         pass
 
-    def run(self, command: str, cwd: str | None = None) -> tuple[int, str]:
+    def run(self, command: str, cwd: str | None = None, silent: bool = False) -> tuple[int, str]:
         # Ignore the cwd parameter since we assume that the user is running the command from the correct directory.
         outputs = []
         with subprocess.Popen(
@@ -23,7 +23,8 @@ class LocalClient(Client):
             universal_newlines=True,
         ) as process:
             for line in process.stdout:
-                typer.echo(line, nl=False)
+                if not silent:
+                    typer.echo(line, nl=False)
                 outputs.append(line)
             returncode = process.wait()
         output = "".join(outputs)

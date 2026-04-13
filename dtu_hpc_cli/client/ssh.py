@@ -20,13 +20,13 @@ class SSHClient(Client):
     def close(self):
         self.client.close()
 
-    def run(self, command: str, cwd: str | None = None) -> tuple[int, str]:
+    def run(self, command: str, cwd: str | None = None, silent: bool = False) -> tuple[int, str]:
         command = f'bash -l -c "{command}"'
         if cwd is not None:
             with self.client.cd(cwd):
-                result = self.client.run(command, warn=True)
+                result = self.client.run(command, warn=True, hide=silent)
         else:
-            result = self.client.run(command, warn=True)
+            result = self.client.run(command, warn=True, hide=silent)
         return result.exited, result.stdout
 
     def remove(self, path: str):

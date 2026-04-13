@@ -259,9 +259,20 @@ def queues(queue: Annotated[str, typer.Argument()] = None):
 
 
 @cli.command()
-def remove(job_ids: List[str], from_history: bool = False):
+def remove(
+    job_ids: Annotated[List[str], typer.Argument()] = None,
+    all_jobs: Annotated[bool, typer.Option("--all")] = False,
+    from_history: bool = False,
+):
     """Remove jobs from the queue."""
-    config = RemoveConfig(from_history=from_history, job_ids=job_ids)
+    if not all_jobs and job_ids is None:
+        raise typer.BadParameter("Provide job IDs or use --all to remove all jobs.")
+    elif all_jobs and job_ids is not None:
+        raise typer.BadParameter("Cannot provide job IDs when using --all.")
+
+    if job_ids is None:
+        job_ids = []
+    config = RemoveConfig(all=all_jobs, from_history=from_history, job_ids=job_ids)
     execute_remove(config)
 
 
