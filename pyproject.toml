@@ -5,10 +5,10 @@ license = "MIT"
 name = "dtu-hpc-cli"
 readme = "README.md"
 repository = "https://github.com/ChrisFugl/DTU-HPC-CLI"
-version = "1.5.1"
 
 [project]
 name = "dtu-hpc-cli"
+version = "1.5.2"
 
 [project.urls]
 Changelog = "https://github.com/ChrisFugl/DTU-HPC-CLI/CHANGELOG.md"
