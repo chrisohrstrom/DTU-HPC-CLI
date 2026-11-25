@@ -234,9 +234,10 @@ def jobs(
     node: str | None = None,
     queue: str | None = None,
     stats: Annotated[JobsStats, typer.Option()] = None,
+    full_name: Annotated[bool, typer.Option(help="Show the full job name instead of a truncated one.")] = True,
 ):
     """List running and pending jobs."""
-    list_config = JobsConfig(node=node, queue=queue, stats=stats)
+    list_config = JobsConfig(node=node, queue=queue, stats=stats, full_name=full_name)
     execute_jobs(list_config)
 
 

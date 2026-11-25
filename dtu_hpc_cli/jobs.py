@@ -14,26 +14,34 @@ class JobsConfig:
     node: str | None
     queue: str | None
     stats: JobsStats | None
+    full_name: bool = True
 
 
-BASE_FIELDS = ["jobid", "job_name", "stat", "queue", "exec_host"]
 CPU_FIELDS = ["cpu_used", "run_time", "nexec_host", "slots"]
 MEMORY_FIELDS = ["mem", "max_mem", "avg_mem", "memlimit"]
 
 
 def execute_jobs(config: JobsConfig):
     command = ["bjobs"]
+
+    # In -o format, a bare field name has unlimited width while "field:" uses the recommended (truncated) width.
+    job_name_field = "job_name" if config.full_name else "job_name:"
+    base_fields = ["jobid", job_name_field, "stat", "queue", "exec_host"]
+
     match config.stats:
         case JobsStats.cpu:
-            fields = BASE_FIELDS + CPU_FIELDS
+            fields = base_fields + CPU_FIELDS
         case JobsStats.memory:
-            fields = BASE_FIELDS + MEMORY_FIELDS
+            fields = base_fields + MEMORY_FIELDS
         case _:
             fields = None
 
     if fields is not None:
         # Single quotes because the SSH client wraps the command in double quotes.
         command.extend(["-o", f"'{' '.join(fields)}'"])
+    elif config.full_name:
+        # Wide format prevents bjobs from truncating the job name (and other fields) in the default output.
+        command.append("-w")
 
     if config.node is not None:
         command.extend(["-m", config.node])
