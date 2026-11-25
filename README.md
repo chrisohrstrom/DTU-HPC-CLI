@@ -45,7 +45,7 @@ You can call it using the `dtu` command, which has the these subcommands:
 * **get-options**: Print options from a previously submitted job.
 * **history**: Shows a list of the jobs that you have submitted and the options/commands that you used.
 * **install**: Calls the installation commands in your configuration. NB. this command will install your project on the HPC - not on your local machine.
-* **jobs**: Shows a list of running and pending jobs. It calls `bstat` on the HPC.
+* **jobs**: Shows a list of running and pending jobs. It calls `bjobs` on the HPC.
 * **open-error**: Show the error log of a given job ID in your default text editor.
 * **open-output**: Show the output log of a given job ID in your default text editor.
 * **queues**: List all queues or show job statistics for a single queue. It calls `bqueues` or `classtat` on the HPC.
