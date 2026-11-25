@@ -1,5 +1,14 @@
 # Changelogs
 
+## v1.5.2
+
+jobs:
+* Now uses `bjobs` (the official LSF command) instead of `bstat` to list jobs.
+* Added `--full-name/--no-full-name` option (default: `--full-name`) to control whether job names are shown in full or truncated. `--node` maps to `bjobs -m` and `--stats cpu/memory` select CPU/memory columns via `bjobs -o`.
+
+remove:
+* `--all` now uses `bjobs` instead of `bstat` to find unfinished jobs.
+
 ## v1.5.1
 
 remove:
