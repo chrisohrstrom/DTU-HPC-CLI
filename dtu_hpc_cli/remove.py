@@ -57,12 +57,10 @@ def expand_job_ids(config: RemoveConfig) -> list[str]:
 
 def get_all_job_ids() -> list[str]:
     with get_client() as client:
-        _, output = client.run("bstat", silent=True)
+        _, output = client.run("bjobs -noheader -o jobid", silent=True)
 
-    lines = output.splitlines()
-    if len(lines) <= 1:
-        return []
-
-    job_ids = [line.split()[0] for line in lines[1:] if len(line.strip()) > 0]
+    # bjobs prints "No unfinished job found" (possibly merged into stdout) when there are no jobs,
+    # so only keep lines that are actual job IDs.
+    job_ids = [line.strip() for line in output.splitlines() if line.strip().isdigit()]
 
     return job_ids
